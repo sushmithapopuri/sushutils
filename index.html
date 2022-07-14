@@ -1,54 +1,82 @@
-<!DOCTYPE html>
 <html lang="en" >
 <head>
-  <meta charset="UTF-8">
-  <title>*PA*</title>
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css'>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-  <!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>*PA*</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <div class="container">
-        <h1 class="header">Sush's Personal Assistant</h1>
-        <i id = "start" class="icon fa fa-microphone" aria-hidden="true"></i>
-        <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="mom" checked>
-            <label class="form-check-label" for="mom">Generate Meeting Transcript</label>
-          </div>
-        <div id = "control" class="btn-grp recording hide">
-            <i id = "cancel" class="icon fa fa-times-circle-o" aria-hidden="true"></i>
-            <i id = "pause" class="icon fa fa-pause-circle-o" aria-hidden="true"></i>
-            <i id = "resume" class="icon fa fa-play-circle-o hide" aria-hidden="true"></i>
-            <i id = "stop" class="icon fa fa-stop-circle-o" aria-hidden="true"></i>
-        </div>
-        <div id =status-container class="btn-grp recording hide">
-            <i class="red-recording-dot fa fa-circle" aria-hidden="true"></i>
-            <p id="elapsed-time"></p>
-            <p id = "status" class=" hide">Audio is playing<span>.</span><span>.</span><span>.</span></p>
-        </div>
-        <div id = "display" class="result btn-grp hide">
-            <i id = "rplay" class="icon fa fa-play-circle-o" aria-hidden="true"></i>
-            <i id = "rpause" class="icon fa fa-pause-circle-o hide" aria-hidden="true"></i>  
-            <a id = "download" class="icon fa fa-download" aria-hidden="true"></a> 
-            <input type="text" class = "fa-lg" id="download-name" placeholder="Filename for Download">  
-            <audio id="player" class="hide"></audio>
-        </div>
-        <input id = "mom-display" class="result btn-grp hide">
-            <textarea id="mom-text"  class="form-control" placeholder="Readonly input here..." value = "" aria-label="readonly input" readonly></textarea>
-        </div>
-            
+    <div class = "container-fluid">
+        <div class="row justify-content-md-center row-cols-1 row-cols-sm-3 row-cols-md-4 row-cols-lg-5">
+            <div class="col card">
+                <i class="card-icon fa fa-money-bill-wave" aria-hidden="true"></i>
+                <hr/>
+                <h5 class="card-title">Tax Computer</h5>
+                <hr/>
+                <p class="card-text">Calculate the tax and focus on possible savings</p>
+                <a href="#" class="btn btn-outline-primary">Try Now</a>
+            </div>
 
-        
-	<!-- <a id="download">Download</a> -->
+            <div class="col btn card">
+                <i class="card-icon fa fa-microphone" aria-hidden="true"></i>
+                <hr/>
+                <h5 class="card-title btn-outline-primary">Audio Only Recorder</h5>
+                <hr/>
+                <p class="card-text">Records audio and genrates MP3 file, with capabilities for playing and download</p>
+                <a href="pages/audiorecorder.html" class="btn btn-outline-primary">Try Now</a>
+            </div>
+
+            <div class="col btn card">
+                <i class="card-icon fa fa-display" aria-hidden="true"></i>
+                <hr/>
+                <h5 class="card-title btn-outline-primary">Screen Only Recorder</h5>
+                <hr/>
+                <p class="card-text">Records screen and genrates MP4 file, with capabilities for playing and download</p>
+                <a href="#" class="btn btn-outline-primary">Try Now</a>
+            </div>
+
+            <div class="col btn card">
+                <i class="card-icon fa fa-microphone" aria-hidden="true"></i>
+                <hr/>
+                <h5 class="card-title btn-outline-primary">Meeting Recorder</h5>
+                <hr/>
+                <p class="card-text">Records audio and screen and genrates MP4 file, with capabilities for playing and download</p>
+                <a href="#" class="btn btn-outline-primary">Try Now</a>
+            </div>
+
+            <div class="col btn card">
+                <i class="card-icon fa fa-microphone" aria-hidden="true"></i>
+                <hr/>
+                <h5 class="card-title btn-outline-primary">Documenter</h5>
+                <hr/>
+                <p class="card-text">Listens to microphone and generates text</p>
+                <a href="#" class="btn btn-outline-primary">Try Now</a>
+            </div>
+
+            <div class="col btn card">
+                <i class="card-icon fa fa-microphone" aria-hidden="true"></i>
+                <hr/>
+                <h5 class="card-title btn-outline-primary">Transcripter</h5>
+                <hr/>
+                <p class="card-text">Reads MP3/MP4 file and generates text transcripts</p>
+                <a href="#" class="btn btn-outline-primary">Try Now</a>
+            </div>
+
+            <div class="col btn card">
+                <i class="card-icon fa fa-microphone" aria-hidden="true"></i>
+                <hr/>
+                <h5 class="card-title btn-outline-primary">Audio and Video Only Recorder</h5>
+                <hr/>
+                <p class="card-text">Records audio and video and genrates MP4 file, with capabilities for playing and download</p>
+                <a href="#" class="btn btn-outline-primary">Try Now</a>
+            </div>
+
+        </div>
     </div>
 
-<!-- partial -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script  src="js/recorder.js"></script>
-  <script  src="js/converter.js"></script>
-  <script  src="js/script.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

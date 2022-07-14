@@ -1,57 +1,15 @@
-function getRecognizer(){
-	try {
-		var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-		var recognizer = new SpeechRecognition();
-		recognizer.continuous = true; 
-	  }
-	  catch(e) {
-		console.error(e);
-		return 'Error! Browser does not support this feature'
-		
-	  }
-}
-
-var textRecognition = {
-	recognizer: getRecognizer(),
-	start: function(){
-		console.log('Voice textRecognition is on')
-		this.recognizer.start()
-	},
-
-	end: function(){
-		this.recognizer.start()
-	},
-
-	error: function (event){
-        instration.text('Try Again');
-        console.log(event);
-    },
-
-	result: function(event) {
-        var current = event.resultIndex;
-        var transcript = event.results[current][0].transcript;
-        var confidence = event.results[current][0].confidence;
-        console.log(transcript);
-         content += transcript;
-        return content;
-    },
-
-	pause: function(){
-
-	},
-
-	generateFile: function (text) {  
-    	var data = new Blob([text], {type: 'text/plain'});
-		if (textFile !== null) {  
-			window.URL.revokeObjectURL(textFile);  
-		}	  
-		textFile = window.URL.createObjectURL(data);  
-		return textFile;  
-    }
-
-}
-
-
+/***********************************************Transcription Utilities******************************************************/
+try {
+	var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+	var recognition = new SpeechRecognition();
+  }
+  catch(e) {
+	console.error(e);
+	// $('.no-browser-support').show();
+	// $('.app').hide();
+	$("#status-icon").addClass("fa-times-circle-o")
+	$("#status-msg").text(e)
+  }
   
   
   var noteTextarea = $('#note-textarea');
@@ -62,13 +20,62 @@ var textRecognition = {
   
   // Get all notes from previous sessions and display them.
   var notes = getAllNotes();
-  renderNotes(notes); 
+  renderNotes(notes);
+  
+  
+  
+  /*-----------------------------
+		Voice Recognition 
+  ------------------------------*/
+  
+  // If false, the recording will stop after a few seconds of silence.
+  // When true, the silence period is longer (about 15 seconds),
+  // allowing us to keep recording even when the user pauses. 
+  recognition.continuous = true;
+  
+  // This block is called every time the Speech APi captures a line. 
+  recognition.onresult = function(event) {
+  
+	// event is a SpeechRecognitionEvent object.
+	// It holds all the lines we have captured so far. 
+	// We only need the current one.
+	var current = event.resultIndex;
+  
+	// Get a transcript of what was said.
+	var transcript = event.results[current][0].transcript;
+  
+	// Add the current transcript to the contents of our Note.
+	// There is a weird bug on mobile, where everything is repeated twice.
+	// There is no official solution so far so we have to handle an edge case.
+	var mobileRepeatBug = (current == 1 && transcript == event.results[0][0].transcript);
+  
+	if(!mobileRepeatBug) {
+	  noteContent += transcript;
+	  noteTextarea.val(noteContent);
+	}
+  };
+  
+  recognition.onstart = function() { 
+	instructions.text('Voice recognition activated. Try speaking into the microphone.');
+  }
+  
+  recognition.onspeechend = function() {
+	instructions.text('You were quiet for a while so voice recognition turned itself off.');
+  }
+  
+  recognition.onerror = function(event) {
+	if(event.error == 'no-speech') {
+	  instructions.text('No speech was detected. Try again.');  
+	};
+  }
+  
+  
   
   /*-----------------------------
 		App buttons and input 
   ------------------------------*/
   
-  $('#start-record-btn').on('click', function(e) {
+  $('#start').on('click', function(e) {
 	if (noteContent.length) {
 	  noteContent += ' ';
 	}
@@ -76,7 +83,7 @@ var textRecognition = {
   });
   
   
-  $('#pause-record-btn').on('click', function(e) {
+  $('#pause').on('click', function(e) {
 	recognition.stop();
 	instructions.text('Voice recognition paused.');
   });
@@ -86,7 +93,7 @@ var textRecognition = {
 	noteContent = $(this).val();
   })
   
-  $('#save-note-btn').on('click', function(e) {
+  $('#save').on('click', function(e) {
 	recognition.stop();
   
 	if(!noteContent.length) {

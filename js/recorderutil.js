@@ -11,19 +11,20 @@ error_messages = {
 }
 
 /***********************************************Variables**********************************************************/
-var audioRecorder = voiceRecorder
-var transcript = textRecognition
+var recorder
+$(function() {
+    if (window.location.href.endsWith('audio')){
+        console.log(window.location.href)
+        recorder = voiceRecorder
+    }
+    else
+        recorder = screenRecorder
+});
 var maximumRecordingTimeInHours = 2
 var elapsedTime = 0
 var isRecording = false
 
 /***********************************************Utilities**********************************************************/
-
-function generateRecordFile(data){
-	var audioURL = window.URL.createObjectURL(data)
-	$("#player ").attr('src',audioURL)
-	$('#download').attr('href', audioURL)
-}
 
 function generateFileName(){
     console.log('Generating File Name')
@@ -81,7 +82,7 @@ function startRecording() {
         $("#player").trigger("pause")
     }
 
-    audioRecorder.start().then(() => {
+    recorder.start().then(() => {
         elapsedTime = 0
         isRecording = true
         $("#start").css("display", "none")
@@ -104,8 +105,8 @@ function startRecording() {
 
 function pauseRecording(){
     console.log("Pausing audio...")
-    audioRecorder.pause()
-    audioRecorder.paused
+    recorder.pause()
+    recorder.paused
     isRecording = false
     $("#pause").addClass("hide")
     $("#resume").removeClass("hide")
@@ -113,7 +114,7 @@ function pauseRecording(){
 
 function resumeRecording(){
     console.log("Resuming audio...")
-    audioRecorder.resume()
+    recorder.resume()
     isRecording = true
     $("#resume").addClass("hide")
     $("#pause").removeClass("hide")
@@ -121,8 +122,11 @@ function resumeRecording(){
 
 function stopRecording() {
     console.log("Stopping Audio Recording...")
-    audioRecorder.stop().then(audioAsblob => {
-        generateRecordFile(audioAsblob)
+    recorder.stop().then(audioAsblob => {
+        audioURL = recorder.save(audioAsblob)
+        $("#player ").attr('src',audioURL)
+	    $('#download').attr('href', audioURL)
+        $('#download').attr('download', 'output.mp4')
         $("#start").css("display","block")
         $(".recording").addClass("hide")
         $("#display").removeClass("hide")
@@ -141,7 +145,7 @@ function stopRecording() {
 
 function cancelRecording() {
     console.log("Canceling audio...")
-    audioRecorder.cancel()
+    recorder.cancel()
     $("#start").css("display","block")
     $(".recording").addClass("hide")
 }
@@ -174,5 +178,6 @@ $("#download-name").on('input', generateFileName)
 $("#mom").change(generateMoM)
 
 $(function() {
-    console.log( "ready!" );
+    // fa-check-circle-o
+
 });
